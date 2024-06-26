@@ -22,11 +22,12 @@ module.exports = (app) => {
 
         const userDb = await findOne({mail: user.mail})
         if(userDb) throw new ValidationError ('Já existe um usuário com este email');
-        user.password = getPasswdHash(user.password);
-        return app.db('users').insert(user, ['id', 'name', 'mail'])
+        const newUser = { ...user };
+        newUser.password = getPasswdHash(user.password);
+        return app.db('users').insert(newUser, ['id', 'name', 'mail'])
     }
 
 
-    return { findAll, save, findOne, getPasswdHash}
+    return { findAll, save, findOne, getPasswdHash }
 };
 
