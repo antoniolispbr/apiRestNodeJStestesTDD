@@ -1,9 +1,13 @@
+const express = require('express');
 const jwt = require('jwt-simple');
 const bcrypt = require('bcrypt-nodejs');
 const ValidationError = require('../errors/ValidationError');
 const secret = 'Segredo!'
 
 module.exports = (app) => {
+    const routes = express.Router();
+
+    routes.post('/signin',)
     const signin = (req, res, next) => {
         app.services.user.findOne({ mail: req.body.mail })
             .then((user) => {
