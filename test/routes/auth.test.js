@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('../../src/app');
-
+const MAIN_ROUTE = '/v1/users';
 
 
 
@@ -48,7 +48,7 @@ test('Deve reveber token ao logar', () => {
  });
 
  test('Não deve acessar uma rota protegida sem token', () => {
-    return request(app).get('/users')
+    return request(app).get(`${MAIN_ROUTE}`)
         .then((res) => {
             expect(res.status).toBe(401);
         })

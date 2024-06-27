@@ -5,10 +5,8 @@ const ValidationError = require('../errors/ValidationError');
 const secret = 'Segredo!'
 
 module.exports = (app) => {
-    const routes = express.Router();
-
-    routes.post('/signin',)
-    const signin = (req, res, next) => {
+    const router = express.Router();
+    router.post('/signin', (req, res, next) => {
         app.services.user.findOne({ mail: req.body.mail })
             .then((user) => {
                 if(!user) throw new ValidationError('Usuário ou senha inválido');//caso não há usuário cadsatrado
@@ -22,7 +20,20 @@ module.exports = (app) => {
                     res.status(200).json({ token });
                 } else throw new ValidationError('Usuário ou senha inválido')
             }).catch(err => next(err))
-    }
+    }); 
+
+    router.post('/signup', async (req, res, next) => {
+        try{
+            const result = await app.services.user.save(req.body);
+            return res.status(201).json(result[0]);
+        } catch (err) {
+            res.status(400).json({ error: err.message});
+        }
+        
+    });
     
-    return { signin };    
+
+
+
+    return  router ;    
 }
